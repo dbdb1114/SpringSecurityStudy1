@@ -34,8 +34,8 @@ public class IndexController {
 
     // 스프링 시큐리티 해당주소를 가져감.
     @GetMapping("/login")
-    public @ResponseBody String login() {
-        return "/login";
+    public String login() {
+        return "/loginForm";
     }
 
     @GetMapping("/join")
