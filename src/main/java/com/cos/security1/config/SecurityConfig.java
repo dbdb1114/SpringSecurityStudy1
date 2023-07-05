@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 /**
  *  @EnableWebSecurity
- * 현재 작성하는 스프링 시큐리티 필터가 스프링 필터체인에 등록이 됨.
+ *      현재 작성하는 스프링 시큐리티 필터가 스프링 필터체인에 등록이 됨.
  *
  * .antMatchers("/user/**").authenticated()
  *  권한을 확인한다.
@@ -27,8 +27,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/user/**").authenticated()
                 .antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
-                .antMatchers("/manager/**").access("hasRole('ROLE_ADMIN')")
-                .anyRequest().permitAll();
+                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                .anyRequest().permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login");
     }
 
 }
