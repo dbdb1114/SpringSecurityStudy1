@@ -28,6 +28,7 @@ public class PrincipalDetailsService implements UserDetailsService {
 
     /**
      * 시큐리티 session( 내부 Authentication내무 ( UserDetails ) )
+     * 함수 종료시 @AuthenticationPrincipal 어노테이션 만들어짐.
      * */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -1,11 +1,15 @@
 package com.cos.security1.config.auth;
 
 import com.cos.security1.model.User;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -21,12 +25,19 @@ import java.util.Collection;
  *  Security Session => Authentication => UserDeatils(PrincipalDetails) 타입의 정보
  *
  * */
-public class PrincipalDetails implements UserDetails {
+@Data
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user; // 콤포지션
+    private Map<String,Object> attributes;
 
     public PrincipalDetails(User user) {
         this.user = user;
+    }
+
+    public PrincipalDetails(User user,Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
     }
 
     // 해당 User의 권한을 return 하는 곳.
@@ -45,7 +56,6 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-
         return user.getPassword();
     }
 
@@ -58,14 +68,6 @@ public class PrincipalDetails implements UserDetails {
     public boolean isAccountNonExpired() {
         return true;
     }
-
-
-    /**
-     *
-     *
-     *
-     * */
-
     @Override
     public boolean isAccountNonLocked() {
         return true;
@@ -85,5 +87,18 @@ public class PrincipalDetails implements UserDetails {
          *  우리 사이트 1년 동안 회원으로 로그인 안하면, 휴면 계정으로 하기로 함.
          * */
         return true;
+    }
+
+
+    @Override
+    public Map<String, Object> getAttributes() {
+
+
+        return attributes;
+    }
+
+    @Override
+    public String getName() {
+        return (String) attributes.get("sub");
     }
 }
